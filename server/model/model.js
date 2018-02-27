@@ -1,18 +1,21 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
 class GameInstance {
   constructor(playerArray, merlinBool) {
     this.playerArray = playerArray;
     this.playerCount = playerArray.length;
-    // thumbs up thumbs down votes total
+    this.merlinBool = merlinBool;
+    this.allPlayers;
     this.missionParticipantCount;
     this.missionFourFailCount;
-    this.merlinBool = merlinBool;
-    this.thumbsVotes;
+    this.playerRoles;
     this.missionSuccess = [null, null, null, null, null];
+
+    this.participantsSelected = false;
+    this.thumbsVotes;
     this.missionNumber = 1;
     this.turnNumber = 1;
-    this.playerRoles;
+    // thumbs up thumbs down votes total
   }
 
   setUpGameState() {
@@ -21,81 +24,90 @@ class GameInstance {
       this.missionFourFailCount = 1;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'assa', 'mer', 'res', 'res']);
+        this.setRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'res', 'res', 'res']);
+        this.setRoles();
       }
     } else if (this.playerCount === 6) {
       this.participantCount = [2, 3, 4, 3, 4];
       this.missionFourFailCount = 1;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'assa', 'mer', 'res', 'res', 'res']);
+        this.setRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       }
     } else if (this.playerCount === 7) {
       this.participantCount = [2, 3, 3, 4, 4];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'assa', 'mer', 'res', 'res', 'res']);
+        this.setRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       }
     } else if (this.playerCount = 8) {
       this.participantCount = [3, 4, 4, 5, 5];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'assa', 'mer', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'res', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       }
     } else if (this.playerCount = 9) {
       this.participantCount = [3, 4, 4, 5, 5];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'assa', 'mer', 'res', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'res', 'res', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       }
     } else if (this.playerCount = 10) {
       this.participantCount = [3, 4, 4, 5, 5];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'assa', 'mer', 'res', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'spy', 'res', 'res', 'res', 'res', 'res', 'res']);
+        this.setRoles();
       }
     }
 
   }
 
-  setRoles(socketId) {
+  setRoles() {
     this.playerArray.map((player, i) => {
       let player.socketId.toString() = new PlayerInstance(player.socketId, player.name, playerRoles[i])
       this.allPlayers.push(i);
-    })
-
-    }
+    });
+  }
 
 
   setThumbsVotes() {
 
   }
 
-  setMissionSuccess() {
-    if (handleMissionSuccess) {
-      this.missionSuccess[this.turn - 1] = 1;
-    } else {
-      this.missionSuccess[this.turn - 1] = 0;
-    }
-  }
+  // setMissionSuccess() {
+  //   if (handleMissionSuccess) {
+  //     this.missionSuccess[this.turn - 1] = 1;
+  //   } else {
+  //     this.missionSuccess[this.turn - 1] = 0;
+  //   }
+  // }
 
   handleMissionSuccess() {
     
   }
 
 }
-
-
 
 let playerArray = [
   {
@@ -120,7 +132,10 @@ let playerArray = [
   }
 ]
 
-let merlinBool = true;
+let aGame = new GameInstance(playerArray, true);
+aGame.setUpGameState();
+
+// let merlinBool = true;
 
 // [
 //   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -22,35 +22,35 @@ class PlayerInstance {
 
 
 
-let playerArray = [
-  {
-    name: 'Louis',
-    merlin: false,
-    spy: true,
-    socketId: 12315161,
-  },
-  {
-    name: 'Yunus',
-    merlin: false,
-    spy: true,
-    socketId: 12315161,
-  },
-  {
-    name: 'Zhen',
-    merlin: true,
-    spy: false,
-    socketId: 12315161,
-  },
-  {
-    name: 'Mike',
-    merlin: false,
-    spy: false,
-    socketId: 12315161,
-  },
-  {
-    name: 'Wyatt',
-    merlin: false,
-    spy: false,
-    socketId: 12315161,
-  }
-]
+// let playerArray = [
+//   {
+//     name: 'Louis',
+//     merlin: false,
+//     spy: true,
+//     socketId: 12315161,
+//   },
+//   {
+//     name: 'Yunus',
+//     merlin: false,
+//     spy: true,
+//     socketId: 12315161,
+//   },
+//   {
+//     name: 'Zhen',
+//     merlin: true,
+//     spy: false,
+//     socketId: 12315161,
+//   },
+//   {
+//     name: 'Mike',
+//     merlin: false,
+//     spy: false,
+//     socketId: 12315161,
+//   },
+//   {
+//     name: 'Wyatt',
+//     merlin: false,
+//     spy: false,
+//     socketId: 12315161,
+//   }
+// ]
