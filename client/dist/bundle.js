@@ -79,7 +79,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar App = function App() {\n  return _react2.default.createElement(\n    'div',\n    null,\n    'THIS IS REACT'\n  );\n};\n\n_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));\n\n//# sourceURL=webpack:///./client/src/index.jsx?");
+eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar App = function App() {\n  return _react2.default.createElement(\n    'div',\n    null,\n    'THIS IS REACT'\n  );\n};\n\n_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));\n\n/*\nMIKE REFERENCE THIS TO TALK TO SOCKETS\nhttps://socket.io/docs/client-api/\n\nEXAMPLE\nvar socket = io.connect();\n  socket.on('boardState', function (data) {\n    [{},{},{}]\n  });\n  socket.emit('voteResult' , {\n    yesOrNo: true\n  });\n\n*/\n\n//# sourceURL=webpack:///./client/src/index.jsx?");
 
 /***/ }),
 
