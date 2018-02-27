@@ -12,7 +12,7 @@ class PlayerInstance {
 }
 
 
-
+module.exports = PlayerInstance;
 
 
 
