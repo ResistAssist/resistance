@@ -1,11 +1,12 @@
 const _ = require('lodash');
+const PlayerInstance = require('./player');
 
 class GameInstance {
   constructor(playerArray, merlinBool) {
     this.playerArray = playerArray;
     this.playerCount = playerArray.length;
     this.merlinBool = merlinBool;
-    this.allPlayers;
+    this.allPlayers = [];
     this.missionParticipantCount;
     this.missionFourFailCount;
     this.playerRoles;
@@ -85,9 +86,12 @@ class GameInstance {
 
   setRoles() {
     this.playerArray.map((player, i) => {
-      let player.socketId.toString() = new PlayerInstance(player.socketId, player.name, playerRoles[i])
-      this.allPlayers.push(i);
+      let playerId = player.socketId.toString();
+      let newPlayer = new PlayerInstance(playerId, player.name, this.playerRoles[i])
+      this.allPlayers.push(newPlayer);
     });
+
+    console.log(this.allPlayers);
   }
 
 
