@@ -4,6 +4,8 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
+    "start": "nodemon server/index.js",
+    "build": "webpack --watch", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
