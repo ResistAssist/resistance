@@ -3,6 +3,7 @@ var model = require('../model');
 
 var activeSockets = [];
 var voteCount = 0;
+var participants;
 
 
 module.exports = {
@@ -22,7 +23,7 @@ module.exports = {
         socket.on('activePlayerChoice', handleActivePlayerChoice); 
 
         socket.on('vote', handleVotes);
-
+        socket.on('missionVote', handleMissionVotes);
 
         handleDisconnect(socket);
     }
@@ -31,7 +32,7 @@ module.exports = {
 //RESPONSE FUNCTIONS
 
 var handleActivePlayerChoice = function(chosenArr) {
-    //function to handle array of leaders choice
+    //function to handle array of leaders choice e.g [4,7,1]
 }
 
 var handleVotes = function(socket) {
@@ -43,8 +44,22 @@ var handleVotes = function(socket) {
             for (var i = 0; i < activeSockets.length; i ++) {
                 voteArr.push(activeSockets[i].vote);
             }
-            //function to handle votes in model called here
+            //function to handle votes in model called here e.g [true, false, false, true, true, ...]
         
+        }
+    }
+}
+
+var handleMissionVotes = function(socket) {
+    return function (vote) {
+        voteCount ++;
+        socket.vote = vote;
+        if (voteCount === participants.length) {
+            var voteArr = [];
+            for (var i = 0; i < participants.length; i ++) {
+                voteArr.push(activeSockets[participants[i]].vote);
+            }
+            //function to handle votes in model called here (just votes of failures and passes) e.g 5 players 2 participants [true, true]
         }
     }
 }
@@ -64,7 +79,7 @@ var handleDisconnect = function (socket) {
 }
 
 
-//initialization functions
+//INITIALIZATION/HELPER FUNCTIONS
 var initializeGame = function(data) {
     //data needs to be object with merlin true or false
     var nameArr = [];
@@ -85,7 +100,12 @@ var handleNameEntry = function(socket) {
 
 var initializeVote = function () {
     voteCount = 0;
+    if (arguments.length === 1) {
+        participants = arguments[0];
+    }
 }
+
+
 
 // CONNECTIONS TO MODELS (EMIT REACTIONS)/OUTPUTS
 // who the spies are? who merlin is? and who starts
@@ -127,6 +147,6 @@ model.emitMissionStart(function (participants) {
         console.log('Emitting to: ' + i);
         activeSockets[i].emit('initialization', participants);
     }
-    initializeMissionVote();
-})
+    initializeVote(participants);
+});
 
