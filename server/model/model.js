@@ -2,10 +2,10 @@ const _ = require('lodash');
 const PlayerInstance = require('./player');
 
 class GameInstance {
-  constructor(playerArray, merlinBool) {
+  constructor(playerArray, merlinBool, emitterCallbacks) {
     // Track essential variables regarding game state here
-    this.playerArray = playerArray;
     this.playerCount = playerArray.length;
+    this.playerArray = playerArray;
     this.leader = Math.floor(Math.random() * this.playerCount);
     this.isMerlinPlaying = merlinBool;
     this.allPlayers = [];
@@ -16,6 +16,7 @@ class GameInstance {
     this.missionNumber = 0;
     this.turnNumber = 0;
     this.allThumbsVotes = [];
+    this.currentParticipantCount = 2;
 
     // game phase/flow tracking bools go here
     this.isInitialization = true;
@@ -26,7 +27,11 @@ class GameInstance {
     this.isMissionEnd = false;
 
     // emit functions/callbacks
-    this.emitIntialization;
+    this.emitIntialization = emitterCallbacks.emitIntialization;
+    this.emitTurnStart = emitterCallbacks.emitTurnStart;
+    this.emitParticipants = emitterCallbacks.emitParticipants;
+    this.emitMissionStart = emitterCallbacks.emitMissionStart;
+    this.emitResultMissionVote = emitterCallbacks.emitResultMissionVote;
   }
 
   // this function controls the flow of the game determining what phase the players should be playing
@@ -40,98 +45,97 @@ class GameInstance {
 
 
   // functions to run when initializing the game. Should need to be run just once.
-  setUpGameState(cb1) {
+  setUpGameState() {
     if (this.playerCount === 5) {
       this.missionParticipantCount = [2, 3, 2, 3, 3];
       this.missionFourFailCount = 1;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'assa', 'mer', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       }
     } else if (this.playerCount === 6) {
       this.missionParticipantCount = [2, 3, 4, 3, 4];
       this.missionFourFailCount = 1;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'assa', 'mer', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       }
     } else if (this.playerCount === 7) {
       this.missionParticipantCount = [2, 3, 3, 4, 4];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'assa', 'mer', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       }
     } else if (this.playerCount = 8) {
       this.missionParticipantCount = [3, 4, 4, 5, 5];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'assa', 'mer', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'res', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       }
     } else if (this.playerCount = 9) {
       this.missionParticipantCount = [3, 4, 4, 5, 5];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'assa', 'mer', 'res', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'res', 'res', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       }
     } else if (this.playerCount = 10) {
       this.missionParticipantCount = [3, 4, 4, 5, 5];
       this.missionFourFailCount = 2;
       if (this.merlinBool) {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'assa', 'mer', 'res', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       } else {
         this.playerRoles = _.shuffle(['spy', 'spy', 'spy', 'spy', 'res', 'res', 'res', 'res', 'res', 'res']);
-        this.setRoles();
+        this.setUpRoles();
       }
     }
-    //this.emitIntialization = cb1;
-    //this.emitIntialization(this.allPlayers, this.leader, this.missionBoard, this.missionNumber, this.turnNumber);
+    
   }
 
   setUpRoles() {
     console.log('the player name array', this.playerArray);
     console.log('the team leader', this.leader);
-
+    let isRes, isMer, isSpy, isAssa;
 
     this.playerArray.map((player, i) => {
       if (this.playerRoles[i] === 'res') {
-        let isRes = true;
-        let isMer = false;
-        let isSpy = false;
-        let isAssa = false;
+        isRes = true;
+        isMer = false;
+        isSpy = false;
+        isAssa = false;
       } else if (this.playerRoles[i] === 'mer') {
-        let isRes = true;
-        let isMer = true;
-        let isSpy = false;
-        let isAssa = false;
+        isRes = true;
+        isMer = true;
+        isSpy = false;
+        isAssa = false;
       } else if (this.playerRoles[i] === 'spy') {
-        let isRes = false;
-        let isMer = false;
-        let isSpy = true;
-        let isAssa = false;
+        isRes = false;
+        isMer = false;
+        isSpy = true;
+        isAssa = false;
       } else if (this.playerRoles[i] === 'assa') {
-        let isRes = false;
-        let isMer = false;
-        let isSpy = true;
-        let isAssa = true;
+        isRes = false;
+        isMer = false;
+        isSpy = true;
+        isAssa = true;
       }
       let newPlayer = new PlayerInstance(player, isRes, isMer, isSpy, isAssa)
       this.allPlayers.push(newPlayer);
@@ -142,7 +146,7 @@ class GameInstance {
   }
 
   setUpAllThumbsVotesArray() {
-    let len = valueOf(this.playerCount);
+    let len = this.playerCount.valueOf();
     for (var i = 0; i < 5; i += 1) {
       let tempArray = [];
       for (var j = 0; j < len; j += 1) {
@@ -151,7 +155,9 @@ class GameInstance {
       this.allThumbsVotes.push(tempArray);
     }
 
-    console.log('this is the state of the thumbs votes: ', this.allThumbsVotes);
+    //console.log('this is the state of the thumbs votes: ', this.allThumbsVotes);
+
+    //this.emitIntialization(this.allPlayers, this.leader, this.missionBoard, this.missionNumber, this.turnNumber, this.allThumbsVotes, this.missionParticipantCount, this.currentParticipantCount);
   }
 
 
@@ -174,7 +180,7 @@ class GameInstance {
   handleChangeTurnNumber(resetBool) {
     this.turnNumber += 1;
     if (this.turnNumer === 5) {
-      handleGameOutcome(false);
+      // handleGameOutcome(false);
     }
   }
 
@@ -196,7 +202,7 @@ class GameInstance {
       }
     })
     if (voteCount > 0) {
-      handleMissionVotes()
+      // handleMissionVotes()
     } else {
 
     }
@@ -234,7 +240,7 @@ class GameInstance {
 
   }
 
-  emitTurnStart(missionNumber, turnNumber, leader, ) {
+  emitTurnStart(missionNumber, turnNumber, leader) {
 
   }
 
@@ -252,12 +258,17 @@ class GameInstance {
 
 }
 
-let playerArray = ['Louis', 'Yunus', 'Wyatt', 'Zhen', 'Mike']
+//let playerArray = ['Louis', 'Yunus', 'Wyatt', 'Zhen', 'Mike']
 
-let aGame = new GameInstance(playerArray, true);
-aGame.setUpGameState();
-aGame.allPlayers[0].getValues(aGame.missionNumber);
+//let aGame = new GameInstance(playerArray, true);
+//aGame.setUpGameState();
 
-
-// module.exports.GameInstance = GameInstance;
+//module.exports = GameInstance;
 module.exports = aGame;
+
+
+
+
+
+//below is an example of a callback to pass info to the players. Unusued.
+//aGame.allPlayers[0].getMissionStatusValues(aGame.missionNumber);

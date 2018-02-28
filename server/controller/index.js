@@ -1,5 +1,5 @@
 
-// var model = require('../model');
+var model = require('../model');
 
 var activeSockets = [];
 var voteCount = 0;
