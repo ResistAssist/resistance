@@ -28,9 +28,9 @@ var handleDisconnect = function (socket) {
 
 // YUNUS EXAMPLE OF WHAT YOU NEED TO CONNECT TO
 //callback is called every interval to emit updated data
-// model.emitInitialization(function (playersArr) {
-//     for (var i = 0; i < activeSockets.length; i++) {
-//         console.log('Emitting to: ' + i);
-//         activeSockets[i].emit('initialization', { update: playersArr });
-//     }
-// })
+model.initialization(function (playersArr) {
+    for (var i = 0; i < activeSockets.length; i++) {
+        console.log('Emitting to: ' + i);
+        activeSockets[i].emit('initialization', playersArr);
+    }
+})
