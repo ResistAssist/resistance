@@ -27,7 +27,7 @@ class GameInstance {
     this.isMissionEnd = false;
 
     // emit functions/callbacks
-    this.emitIntialization = emitterCallbacks.emitIntialization;
+    this.emitInitialization = emitterCallbacks.emitInitialization;
     this.emitTurnStart = emitterCallbacks.emitTurnStart;
     this.emitParticipants = emitterCallbacks.emitParticipants;
     this.emitMissionStart = emitterCallbacks.emitMissionStart;
@@ -263,8 +263,8 @@ class GameInstance {
 //let aGame = new GameInstance(playerArray, true);
 //aGame.setUpGameState();
 
-//module.exports = GameInstance;
-module.exports = aGame;
+module.exports = GameInstance;
+//module.exports = aGame;
 
 
 

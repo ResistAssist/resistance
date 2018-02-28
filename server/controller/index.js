@@ -110,11 +110,15 @@ var initializeVote = function () {
 // CONNECTIONS TO MODELS (EMIT REACTIONS)/OUTPUTS
 // who the spies are? who merlin is? and who starts
 var emitCallbacks = {
-    emitInitialization: function (playersArr) {
+    emitInitialization: function () {
+
+        /*
         for (var i = 0; i < activeSockets.length; i++) {
             console.log('Emitting to: ' + i);
             activeSockets[i].emit('initialization', playersArr);
         }
+        */
+       //console.log(arguments);
     },
     
     //emit the start of a turn (turn number/ vote count/ active player/ numParticipants)
@@ -159,6 +163,6 @@ var emitCallbacks = {
         }
         initializeVote(participants);
     }
-
-
 }
+
+model.initialization(['ted','yunus','zen','fdsf','fdsfdsfsd'], false, emitCallbacks);
