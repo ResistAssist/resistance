@@ -17,9 +17,12 @@ class GameInstance {
     this.missionNumber = 1;
     this.turnNumber = 1;
     // thumbs up thumbs down votes total
+
+    //emit functions
+    this.emitIntialization;
   }
 
-  setUpGameState() {
+  setUpGameState(cb1) {
     if (this.playerCount === 5) {
       this.participantCount = [2, 3, 2, 3, 3];
       this.missionFourFailCount = 1;
@@ -81,8 +84,11 @@ class GameInstance {
         this.setRoles();
       }
     }
-
+    this.emitIntialization = cb1;
+    this.emitIntialization(this.allPlayers);
   }
+
+
 
   setRoles() {
     this.playerArray.map((player, i) => {
@@ -95,7 +101,7 @@ class GameInstance {
   }
 
 
-  setThumbsVotes() {
+  handleThumbsVotes() {
 
   }
 
@@ -137,7 +143,7 @@ let playerArray = [
 ]
 
 let aGame = new GameInstance(playerArray, true);
-aGame.setUpGameState();
+module.exports = aGame;
 
 // let merlinBool = true;
 

@@ -3,12 +3,22 @@ class PlayerInstance {
     this.socketId = socketId;
     this.playerName = playerName;
     this.role = role;
+    this.active = false;
 
     this.missionParticipant;
-    this.thumbsVotes = {};
+    this.thumbsVotes = [
+      [null, null, null, null, null],
+      [null, null, null, null, null], 
+      [null, null, null, null, null], 
+      [null, null, null, null, null], 
+      [null, null, null, null, null]
+    ];
     this.missionVote;
   }
 
+  handleThumbsVote() {
+
+  }
 }
 
 
