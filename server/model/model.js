@@ -5,17 +5,18 @@ class GameInstance {
   constructor(playerArray, merlinBool) {
     this.playerArray = playerArray;
     this.playerCount = playerArray.length;
+    this.leader = Math.floor(Math.random() * playerCount);
     this.merlinBool = merlinBool;
     this.allPlayers = [];
     this.missionParticipantCount;
     this.missionFourFailCount;
     this.playerRoles;
-    this.missionSuccess = [null, null, null, null, null];
+    this.missionBoard = [null, null, null, null, null];
 
-    this.participantsSelected = false;
-    this.thumbsVotes;
     this.missionNumber = 1;
     this.turnNumber = 1;
+    this.participantsSelected = false;
+    this.thumbsVotes;
     // thumbs up thumbs down votes total
 
     //emit functions
@@ -85,10 +86,15 @@ class GameInstance {
       }
     }
     this.emitIntialization = cb1;
-    this.emitIntialization(this.allPlayers);
+    this.emitIntialization(this.allPlayers, this.leader, this.missionBoard, this.missionNumber, this.turnNumber);
   }
 
-
+  incrementLeader() {
+    this.leader += 1;
+    if (this.leader === this.playerCount) {
+      this.leader = 0;
+    }
+  }
 
   setRoles() {
     this.playerArray.map((player, i) => {
@@ -101,19 +107,27 @@ class GameInstance {
   }
 
 
-  handleThumbsVotes() {
+  handleThumbsVotesBoard(arrayOfVotes) {
+    let voteCount = 0;
+    arrayOfVotes.forEach(num => {
+      if (num === 1) {
+        voteCount += 1;
+      } else {
+        voteCount -= 1;
+      }
+    })
+    if (voteCount > 0) {
+      handleMissionVotes()
+    } else {
+
+    }
+  }
+
+  handleMissionVotes() {
 
   }
 
-  // setMissionSuccess() {
-  //   if (handleMissionSuccess) {
-  //     this.missionSuccess[this.turn - 1] = 1;
-  //   } else {
-  //     this.missionSuccess[this.turn - 1] = 0;
-  //   }
-  // }
-
-  handleMissionSuccess() {
+  handleMissionOutcome(isSuccesful) {
     
   }
 
@@ -142,17 +156,5 @@ let playerArray = [
   }
 ]
 
-let aGame = new GameInstance(playerArray, true);
-module.exports = aGame;
-
-// let merlinBool = true;
-
-// [
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0],
-// ]
-
-// arguments for the callback: true or false for each index
+// let aGame = new GameInstance(playerArray, true);
+module.exports = GameInstance;

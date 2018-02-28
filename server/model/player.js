@@ -1,11 +1,10 @@
 class PlayerInstance {
-  constructor(socketId, playerName, role) {
+  constructor(socketId, playerName, role, playerCount) {
     this.socketId = socketId;
     this.playerName = playerName;
     this.role = role;
-    this.active = false;
 
-    this.missionParticipant;
+    this.missionParticipant = false;
     this.thumbsVotes = [
       [null, null, null, null, null],
       [null, null, null, null, null], 
