@@ -150,3 +150,11 @@ model.emitMissionStart(function (participants) {
     initializeVote(participants);
 });
 
+//emit result of MissionVote TBD
+model.emitResultMissionVote(function (participants) {
+    for (var i = 0; i < activeSockets.length; i++) {
+        console.log('Emitting to: ' + i);
+        activeSockets[i].emit('initialization', participants);
+    }
+    initializeVote(participants);
+});
