@@ -1,23 +1,16 @@
 class PlayerInstance {
-  constructor(socketId, playerName, role, playerCount) {
-    this.socketId = socketId;
+  constructor(playerName, isRes, isMer, isSpy, isAssa) {
     this.playerName = playerName;
-    this.role = role;
-
-    this.missionParticipant = false;
-    this.thumbsVotes = [
-      [null, null, null, null, null],
-      [null, null, null, null, null], 
-      [null, null, null, null, null], 
-      [null, null, null, null, null], 
-      [null, null, null, null, null]
-    ];
-    this.missionVote;
+    this.isRes = isRes;
+    this.isMer = isMer;
+    this.isSpy = isSpy;
+    this.isAssa = isAssa;
   }
 
-  handleThumbsVotePlayer(cb2) {
-    
+  getMissionStatusValues(value) {
+    console.log(value);
   }
+
 }
 
 
