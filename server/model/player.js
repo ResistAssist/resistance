@@ -15,8 +15,8 @@ class PlayerInstance {
     this.missionVote;
   }
 
-  handleThumbsVote() {
-
+  handleThumbsVotePlayer(cb2) {
+    
   }
 }
 

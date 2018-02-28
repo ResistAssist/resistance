@@ -13,12 +13,13 @@ class GameInstance {
     this.playerRoles;
     this.missionBoard = [null, null, null, null, null];
 
-    this.missionNumber = 1;
-    this.turnNumber = 1;
-    this.participantsSelected = false;
+    this.missionNumber = 0;
+    this.turnNumber = 0;
     this.thumbsVotes;
     // thumbs up thumbs down votes total
 
+    // mission 
+    this.participantsSelected = false;
     //emit functions
     this.emitIntialization;
   }
