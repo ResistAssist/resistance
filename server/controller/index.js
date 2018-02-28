@@ -2,23 +2,53 @@
 var model = require('../model');
 
 var activeSockets = [];
+var voteCount = 0;
+
 
 module.exports = {
     connection: function (socket) {
         console.log('a user connected');
         activeSockets.push(socket);
 
+        //for Initialization
         //special host user inputs
         if (activeSockets.length === 1) {
             socket.host = true;
             socket.on('initialize', initalizeGame) 
         }
-
         socket.on('nameEntry', handleNameEntry(socket));
+
+        //begin phase
+        socket.on('activePlayerChoice', handleActivePlayerChoice); 
+
+        socket.on('vote', handleVotes);
+
 
         handleDisconnect(socket);
     }
 }
+
+//RESPONSE FUNCTIONS
+
+var handleActivePlayerChoice = function(chosenArr) {
+    //function to handle array of leaders choice
+}
+
+var handleVotes = function(socket) {
+    return function (vote) {
+        voteCount ++;
+        socket.vote = vote;
+        if (voteCount === activeSockets.length) {
+            var voteArr = [];
+            for (var i = 0; i < activeSockets.length; i ++) {
+                voteArr.push(activeSockets[i].vote);
+            }
+            //function to handle votes in model called here
+        
+        }
+    }
+}
+
 
 //disconnect function
 var handleDisconnect = function (socket) {
@@ -33,22 +63,28 @@ var handleDisconnect = function (socket) {
     });
 }
 
+
+//initialization functions
 var initializeGame = function(data) {
     //data needs to be object with merlin true or false
     var nameArr = [];
     for (var i = 0; i < activeSockets.length; i ++) {
-        nameArr.push(activeSockets[i]);
+        nameArr.push(activeSockets[i].name);
     }
     
     //call initalization function giving arguments ([{name:},...])
     model.initialization(nameArr, data.merlin);
-    
+
 }
 
 var handleNameEntry = function(socket) {
     return function(name) {
         socket.name = name;
     }
+}
+
+var initializeVote = function () {
+    voteCount = 0;
 }
 
 // CONNECTIONS TO MODELS (EMIT REACTIONS)/OUTPUTS
@@ -60,18 +96,37 @@ model.emitInitialization(function (playersArr) {
     }
 })
 
-//game state
-model.updateTable(function (playersArr) {
+//emit the start of a turn (turn number/ vote count/ active player/ numParticipants)
+model.emitTurnStart(function(turnNumber, voteCount, activePlayer, numParticipants) {
     for (var i = 0; i < activeSockets.length; i++) {
         console.log('Emitting to: ' + i);
-        activeSockets[i].emit('initialization', playersArr);
+        var tempObj  = {
+            turnNumber:turnNumber, 
+            voteCount: voteCount
+        }
+        if (i === activePlayer) {
+            tempObj['activePlayer'] = true;
+            tempObj['numParticipants'] = numParticipants;
+        }
+        activeSockets[i].emit('turnStart', tempObj);
     }
 })
 
-//game state
-model.updateTable(function (playersArr) {
+//emit selected participants for mission TBD
+model.emitParticipants(function (participants) {
     for (var i = 0; i < activeSockets.length; i++) {
         console.log('Emitting to: ' + i);
-        activeSockets[i].emit('initialization', playersArr);
+        activeSockets[i].emit('initialization', participants);
     }
+    initializeVote();
 })
+
+//emit start of mission vote TBD
+model.emitMissionStart(function (participants) {
+    for (var i = 0; i < activeSockets.length; i++) {
+        console.log('Emitting to: ' + i);
+        activeSockets[i].emit('initialization', participants);
+    }
+    initializeMissionVote();
+})
+
