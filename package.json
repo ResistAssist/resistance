@@ -7,7 +7,8 @@
     "start": "nodemon server/index.js",
     "build": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "model": "node server/model/model.js"
+    "model": "node server/model/model.js",
+    "player": "node server/model/player.js"
   },
   "author": "",
   "license": "ISC",

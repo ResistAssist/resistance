@@ -1,17 +1,14 @@
-let model = require('./model.js');
+let Game = require('./model.js');
 let player = require('./player.js');
 let game;
 
 module.exports = {
-  initialization: function(playerArray, merlinBool) {
-    game = new model(playerArray, merlinBool);
+  initialization: function(playerArray, merlinBool, emitterCallbacks) {
+    game = new Game(playerArray, merlinBool, emitterCallbacks);
+    game.setUpGameState();
+    game.emitInitialization(game.allPlayers, game.leader, game.missionBoard, game.missionNumber, game.turnNumber, game.allThumbsVotes, game.missionParticipantCount, game.currentParticipantCount);
   },
 
-  emitIntialization: function (cb1) {
-    game.setUpGameState(cb1); 
-  },
 
-  thumbsVotes: function (cb2) {
-    player.handleThumbsVote(cb2);
-  }
+
 }
