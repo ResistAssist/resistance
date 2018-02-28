@@ -88,7 +88,7 @@ var initializeGame = function(data) {
     }
     
     //call initalization function giving arguments ([{name:},...])
-    model.initialization(nameArr, data.merlin);
+    model.initialization(nameArr, data.merlin, emitCallbacks);
 
 }
 
@@ -109,52 +109,56 @@ var initializeVote = function () {
 
 // CONNECTIONS TO MODELS (EMIT REACTIONS)/OUTPUTS
 // who the spies are? who merlin is? and who starts
-model.emitInitialization(function (playersArr) {
-    for (var i = 0; i < activeSockets.length; i++) {
-        console.log('Emitting to: ' + i);
-        activeSockets[i].emit('initialization', playersArr);
-    }
-})
-
-//emit the start of a turn (turn number/ vote count/ active player/ numParticipants)
-model.emitTurnStart(function(turnNumber, voteCount, activePlayer, numParticipants) {
-    for (var i = 0; i < activeSockets.length; i++) {
-        console.log('Emitting to: ' + i);
-        var tempObj  = {
-            turnNumber:turnNumber, 
-            voteCount: voteCount
+var emitCallbacks = {
+    emitInitialization: function (playersArr) {
+        for (var i = 0; i < activeSockets.length; i++) {
+            console.log('Emitting to: ' + i);
+            activeSockets[i].emit('initialization', playersArr);
         }
-        if (i === activePlayer) {
-            tempObj['activePlayer'] = true;
-            tempObj['numParticipants'] = numParticipants;
+    },
+    
+    //emit the start of a turn (turn number/ vote count/ active player/ numParticipants)
+    emitTurnStart: function(turnNumber, voteCount, activePlayer, numParticipants) {
+        for (var i = 0; i < activeSockets.length; i++) {
+            console.log('Emitting to: ' + i);
+            var tempObj  = {
+                turnNumber:turnNumber, 
+                voteCount: voteCount
+            }
+            if (i === activePlayer) {
+                tempObj['activePlayer'] = true;
+                tempObj['numParticipants'] = numParticipants;
+            }
+            activeSockets[i].emit('turnStart', tempObj);
         }
-        activeSockets[i].emit('turnStart', tempObj);
+    },
+    
+    //emit selected participants for mission TBD
+    emitParticipants: function (participants) {
+        for (var i = 0; i < activeSockets.length; i++) {
+            console.log('Emitting to: ' + i);
+            activeSockets[i].emit('initialization', participants);
+        }
+        initializeVote();
+    },
+    
+    //emit start of mission vote TBD
+    emitMissionStart: function (participants) {
+        for (var i = 0; i < activeSockets.length; i++) {
+            console.log('Emitting to: ' + i);
+            activeSockets[i].emit('initialization', participants);
+        }
+        initializeVote(participants);
+    },
+    
+    //emit result of MissionVote TBD
+    emitResultMissionVote: function (participants) {
+        for (var i = 0; i < activeSockets.length; i++) {
+            console.log('Emitting to: ' + i);
+            activeSockets[i].emit('initialization', participants);
+        }
+        initializeVote(participants);
     }
-})
 
-//emit selected participants for mission TBD
-model.emitParticipants(function (participants) {
-    for (var i = 0; i < activeSockets.length; i++) {
-        console.log('Emitting to: ' + i);
-        activeSockets[i].emit('initialization', participants);
-    }
-    initializeVote();
-})
 
-//emit start of mission vote TBD
-model.emitMissionStart(function (participants) {
-    for (var i = 0; i < activeSockets.length; i++) {
-        console.log('Emitting to: ' + i);
-        activeSockets[i].emit('initialization', participants);
-    }
-    initializeVote(participants);
-});
-
-//emit result of MissionVote TBD
-model.emitResultMissionVote(function (participants) {
-    for (var i = 0; i < activeSockets.length; i++) {
-        console.log('Emitting to: ' + i);
-        activeSockets[i].emit('initialization', participants);
-    }
-    initializeVote(participants);
-});
+}
