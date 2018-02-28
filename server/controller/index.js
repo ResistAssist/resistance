@@ -7,9 +7,16 @@ module.exports = {
     connection: function (socket) {
         console.log('a user connected');
         activeSockets.push(socket);
+
+        //special host user inputs
+        if (activeSockets.length === 1) {
+            socket.host = true;
+            socket.on('initialize', initalizeGame) 
+        }
+
+        socket.on('nameEntry', handleNameEntry(socket));
+
         handleDisconnect(socket);
-
-
     }
 }
 
@@ -26,9 +33,43 @@ var handleDisconnect = function (socket) {
     });
 }
 
-// YUNUS EXAMPLE OF WHAT YOU NEED TO CONNECT TO
-//callback is called every interval to emit updated data
-model.initialization(function (playersArr) {
+var initializeGame = function(data) {
+    //data needs to be object with merlin true or false
+    var nameArr = [];
+    for (var i = 0; i < activeSockets.length; i ++) {
+        nameArr.push(activeSockets[i]);
+    }
+    
+    //call initalization function giving arguments ([{name:},...])
+    model.initialization(nameArr, data.merlin);
+    
+}
+
+var handleNameEntry = function(socket) {
+    return function(name) {
+        socket.name = name;
+    }
+}
+
+// CONNECTIONS TO MODELS (EMIT REACTIONS)/OUTPUTS
+// who the spies are? who merlin is? and who starts
+model.emitInitialization(function (playersArr) {
+    for (var i = 0; i < activeSockets.length; i++) {
+        console.log('Emitting to: ' + i);
+        activeSockets[i].emit('initialization', playersArr);
+    }
+})
+
+//game state
+model.updateTable(function (playersArr) {
+    for (var i = 0; i < activeSockets.length; i++) {
+        console.log('Emitting to: ' + i);
+        activeSockets[i].emit('initialization', playersArr);
+    }
+})
+
+//game state
+model.updateTable(function (playersArr) {
     for (var i = 0; i < activeSockets.length; i++) {
         console.log('Emitting to: ' + i);
         activeSockets[i].emit('initialization', playersArr);
